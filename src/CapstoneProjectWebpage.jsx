@@ -4,13 +4,20 @@ const projectMeta = {
   title:
     "A Conversational Multimodal Agent for Evidence-Grounded Question Answering over Lecture-Style Educational Videos",
   subtitle:
-  "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
+    "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
   tagline:
     "This project aims to build a conversational multimodal agent that answers user questions over lecture-style educational videos by first parsing multimedia content into structured, timestamped evidence and then grounding answers in the retrieved evidence.",
   badges: ["Multimodal Agent", "Evidence Grounding", "Lecture Video QA"],
   currentStage: "Phase 2 – Initial Multimedia Parsing Prototype",
   status: "Work in Progress",
 };
+
+const teamMembers = [
+  "Bi Yifeng (Team Lead)",
+  "Han Jiapeng",
+  "Li Siyao",
+  "Yu Zhengting",
+];
 
 const overviewParagraphs = [
   "Long-form lecture video question answering is more difficult than image question answering because the relevant evidence may be distributed across multiple timestamps, multiple shots, and multiple modalities such as speech, slides, board writing, and on-screen text.",
@@ -245,60 +252,60 @@ const phaseDetails = {
     ],
     memberDetails: {
       A: {
-        label: "Role A: ASR",
-        status: "usable baseline",
+        label: "Role A: ASR — Han Jiapeng",
+        status: "prototype output",
         responsibility:
-          "Build the baseline ASR pipeline and produce integration-ready transcript output.",
+          "Maintain the ASR pipeline and deliver transcript JSON in the agreed schema for downstream integration.",
         workDone:
-          "Baseline ASR pipeline has been completed. A Whisper-based pipeline has produced a structured transcript JSON with the fields segment_id, start, end, and text. The current output is already usable for downstream integration by Role C.",
+          "The source video was switched to the unified linear_algebra.mp4 used by the current Phase 2 pipeline. The transcript was regenerated from the new source while keeping the agreed output tags and ASR code unchanged. The current transcript.json contains 148 segments and is aligned to the same timeline used by Roles B and C.",
         output:
-          "Integration-ready transcript JSON for downstream parsing/evidence work.",
+          "transcript.json with stable fields: segment_id, start, end, and text.",
         blockers:
-          "Domain-specific term recognition errors still exist. 'Agentic AI', 'Agentic', and 'Evals' were misrecognized.",
+          "This remains a Phase 2 baseline result. The source content changed because the video source changed, not because the transcript schema changed. Optional later cleanup may still be needed for segmentation and transcription quality.",
         nextStep:
-          "Keep the baseline stable and add domain-term correction/refinement later.",
+          "Keep the current schema stable and support downstream retrieval / localization based on the updated transcript.",
       },
       B: {
-        label: "Role B: Keyframe Extraction + OCR",
-        status: "in progress",
+        label: "Role B: Keyframe Extraction + OCR — Li Siyao",
+        status: "prototype output",
         responsibility:
-          "Implement keyframe extraction and OCR for images and selected video frames.",
+          "Implement keyframe extraction and OCR over the unified video source and produce timestamped visual parsing outputs.",
         workDone:
-          "Workstream is in progress. Final current outputs have not been added to this webpage yet.",
+          "A runnable keyframe extraction + OCR pipeline has been completed for the unified linear_algebra.mp4 source. The current run produced 51 timestamped OCR/frame items together with extracted keyframe images and frame_ocr_mapping.json / .csv outputs.",
         output:
-          "Pending update. Placeholder retained until keyframe/OCR results are available.",
+          "Structured OCR mapping with frame, timestamp_sec, ocr_text, scene_score, and reason, plus extracted keyframe images.",
         blockers:
-          "Selected-frame strategy and OCR output quality still need to be stabilized.",
+          "OCR quality is still uneven on lecture-video frames. Some outputs contain noise, mixed-language fragments, or incomplete text, so later cleaning and deduplication are still needed.",
         nextStep:
-          "Add first visible keyframe and OCR samples when the prototype outputs are ready.",
+          "Refine OCR cleaning and threshold settings while keeping the current output format stable for integration.",
       },
       C: {
-        label: "Role C: Evidence Schema + Parsing Integration",
-        status: "pending integration",
+        label: "Role C: Evidence Schema + Parsing Integration — Yu Zhengting",
+        status: "prototype output",
         responsibility:
-          "Define the first version of timestamped evidence units and connect parsing outputs for downstream use.",
+          "Integrate Role A and Role B outputs into timestamp-aligned evidence units for downstream retrieval.",
         workDone:
-          "Integration work is pending update. The current transcript output from Role A is already usable for downstream integration.",
+          "Completed the first A/B integration pass by aligning transcript segments with OCR/keyframe outputs by timestamp. The current pipeline emits progress2_evidence_units.jsonl and an alignment report for the same linear_algebra video source. The current report shows 148 transcript segments, 51 OCR items matched, and 26 evidence units containing OCR text.",
         output:
-          "Pending update. Evidence schema v1 and parsed-unit integration are being prepared.",
+          "Evidence schema v1 baseline with one evidence unit per ASR segment, plus an alignment report.",
         blockers:
-          "Schema granularity and cross-modal alignment still need to be finalized.",
+          "The quality of integrated evidence still depends on upstream OCR quality, and the current unit granularity may be too fine for later retrieval in some cases.",
         nextStep:
-          "Finalize evidence schema v1 and connect transcript/visual parsing outputs into a consistent storage format.",
+          "Keep evidence schema v1 stable and connect it to retrieval / localization in the next phase.",
       },
       D: {
-        label: "Role D: Coordination + Webpage + Demo/Progress Materials",
-        status: "in progress",
+        label: "Role D: Coordination + Webpage + Demo/Progress Materials — Bi Yifeng (Team Lead)",
+        status: "completed",
         responsibility:
-          "Coordinate current phase communication, maintain the webpage, and prepare progress/demo materials.",
+          "Coordinate the current phase, maintain the webpage, and prepare progress/demo materials.",
         workDone:
-          "Webpage iteration and progress-material preparation are in progress for the current prototype stage.",
+          "The webpage and progress communication materials are being updated to reflect the real current status of the A/B/C workstreams and the current Phase 2 prototype baseline.",
         output:
           "Updated project webpage structure and current phase communication materials.",
         blockers:
-          "The webpage must remain incremental because member outputs do not finish at the same time.",
+          "The webpage must remain incremental because member outputs do not finish at the same time and need to be synchronized carefully before presentation.",
         nextStep:
-          "Keep the webpage updated as Role B/C outputs become available.",
+          "Keep the webpage updated as the current parsing and integration outputs are refined.",
       },
     },
     outputs: {
@@ -309,37 +316,84 @@ const phaseDetails = {
           {
             segment_id: 1,
             start: 0.0,
-            end: 6.56,
-            text: "[prototype transcript segment; current webpage shows output structure rather than final content]",
+            end: 15.84,
+            text: "The fundamental root of it all building block for linear algebra is the vector.",
+          },
+          {
+            segment_id: 2,
+            start: 15.84,
+            end: 19.56,
+            text: "So it's worth making sure that we're all on the same page about what exactly a vector",
           },
         ],
       },
       ocr: {
-        status: "pending update",
-        kind: "placeholder",
-        content:
-          "OCR sample pending. This output area is reserved for Role B when the first stable OCR result is available.",
+        status: "prototype output",
+        kind: "JSON sample",
+        content: [
+          {
+            frame: "frame_00000_00000.00s.jpg",
+            timestamp_sec: 0.0,
+            ocr_text: "@Solaras70",
+            scene_score: 1.0,
+            reason: "first_sample",
+          },
+          {
+            frame: "frame_00001_00001.97s.jpg",
+            timestamp_sec: 1.97,
+            ocr_text:
+              "ZOTAR BY ERY ASS oi 听 译 、 时 间 轴 、 @sscnse of near As 起 ra 3BluelBrc 3",
+            scene_score: 0.1891,
+            reason: "scene_change",
+          },
+        ],
       },
       keyframe: {
-        status: "pending update",
-        kind: "placeholder",
-        content:
-          "Keyframe sample pending. This output area is reserved for Role B when the first selected-frame result is available.",
+        status: "prototype output",
+        kind: "extracted frames",
+        content: [
+          {
+            frame: "frame_00000_00000.00s.jpg",
+            timestamp_sec: 0.0,
+          },
+          {
+            frame: "frame_00010_00053.15s.jpg",
+            timestamp_sec: 53.15,
+          },
+          {
+            frame: "frame_00050_00568.94s.jpg",
+            timestamp_sec: 568.94,
+          },
+        ],
       },
       evidenceUnit: {
-        status: "pending integration",
-        kind: "placeholder",
-        content:
-          "Evidence unit sample pending. This area will be updated after Role C finalizes the first schema-integrated representation.",
+        status: "prototype output",
+        kind: "JSONL sample",
+        content: {
+          unit_id: "u_00001",
+          video_id: "linear_algebra",
+          start_time: 0.0,
+          end_time: 15.84,
+          asr_segment_id: 1,
+          asr_text:
+            "The fundamental root of it all building block for linear algebra is the vector.",
+          ocr_text:
+            "@Solaras70\nZOTAR BY ERY ASS oi 听 译 、 时 间 轴 、 @sscnse of near As 起 ra 3BluelBrc 3\n“Nhe introduction of mumibers as coordinates fis am act of violence.”",
+          keyframe_refs: [
+            "frame_00000_00000.00s.jpg",
+            "frame_00001_00001.97s.jpg",
+            "frame_00002_00005.91s.jpg",
+          ],
+        },
       },
     },
     notes: [
       "Current phase emphasis: Multimedia Parsing and Timestamped Evidence Construction.",
-      "Role A is baseline-complete but still requires later domain-term correction.",
-      "Role B/C/D remain intentionally marked as in progress or pending update to avoid overstating prototype maturity.",
+      "A, B, and C now operate on one unified linear_algebra video source, so the Phase 2 parsing chain is aligned on the same timeline.",
+      "The current Phase 2 baseline now includes updated ASR output, real keyframe/OCR outputs, and an initial evidence-unit integration result.",
     ],
     nextStep:
-      "Stabilize parsing outputs, add OCR/keyframe samples when available, and finalize the first evidence schema for downstream retrieval/localization work.",
+      "Continue OCR cleanup, keep the transcript and evidence schema stable, and use the current evidence_units baseline for retrieval / localization in the next phase.",
   },
 
   phase3: {
@@ -545,7 +599,9 @@ function CollapsibleSection({
       </button>
 
       {isOpen ? (
-        <div className="border-t border-slate-100 px-6 py-6 sm:px-8">{children}</div>
+        <div className="border-t border-slate-100 px-6 py-6 sm:px-8">
+          {children}
+        </div>
       ) : null}
     </section>
   );
@@ -619,7 +675,9 @@ function MemberCard({ member }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h4 className="text-base font-semibold text-slate-900">{member.label}</h4>
+        <h4 className="text-base font-semibold text-slate-900">
+          {member.label}
+        </h4>
         <span
           className={cx(
             "inline-flex rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset",
@@ -646,7 +704,9 @@ function MemberCard({ member }) {
           {member.output}
         </div>
         <div>
-          <span className="font-semibold text-slate-900">Blockers / notes:</span>{" "}
+          <span className="font-semibold text-slate-900">
+            Blockers / notes:
+          </span>{" "}
           {member.blockers}
         </div>
         <div>
@@ -668,7 +728,9 @@ function PhasePanel({ phase, detail, isOpen, onToggle }) {
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base font-semibold text-slate-900">{phase.title}</h3>
+            <h3 className="text-base font-semibold text-slate-900">
+              {phase.title}
+            </h3>
             <span
               className={cx(
                 "inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 ring-inset",
@@ -681,7 +743,9 @@ function PhasePanel({ phase, detail, isOpen, onToggle }) {
               {phase.period}
             </span>
           </div>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{phase.summary}</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {phase.summary}
+          </p>
         </div>
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600">
           {isOpen ? "−" : "+"}
@@ -815,44 +879,55 @@ export default function CapstoneProjectWebpage() {
         <div className="space-y-8">
           <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-blue-50 shadow-sm">
             <div className="grid items-start gap-6 px-6 py-8 sm:px-8 lg:grid-cols-[1.6fr_0.72fr] lg:px-10 lg:py-10">
-                <div>
-                    <div className="flex flex-wrap gap-2">
-                        {projectMeta.badges.map((badge) => (
-                          <Pill key={badge} tone="blue">
-                            {badge}
-                          </Pill>
-                        ))}
-                    </div>
+              <div>
+                <div className="flex flex-wrap gap-2">
+                  {projectMeta.badges.map((badge) => (
+                    <Pill key={badge} tone="blue">
+                      {badge}
+                    </Pill>
+                  ))}
+                </div>
 
-                    <h1 className="mt-5 max-w-4xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-                        {projectMeta.title}
-                    </h1>
+                <h1 className="mt-5 max-w-4xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+                  {projectMeta.title}
+                </h1>
 
                 <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
-        {projectMeta.subtitle}
+                  {projectMeta.subtitle}
                 </p>
 
                 <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-700 sm:text-base">
-                    {projectMeta.tagline}
+                  {projectMeta.tagline}
                 </p>
-                </div>
+              </div>
 
-                <div className="self-start rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm">
+              <div className="self-start rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm">
                 <div className="flex flex-wrap gap-2">
-                    <Pill tone="blue">{projectMeta.currentStage}</Pill>
-                    <Pill tone="amber">{projectMeta.status}</Pill>
+                  <Pill tone="blue">{projectMeta.currentStage}</Pill>
+                  <Pill tone="amber">{projectMeta.status}</Pill>
                 </div>
 
                 <div className="mt-6">
-                    <div className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-          Current emphasis
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    Current emphasis
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
                     <Pill tone="blue">Multimedia Parsing</Pill>
                     <Pill tone="blue">Timestamped Evidence Construction</Pill>
-                    </div>
+                  </div>
                 </div>
+
+                <div className="mt-6">
+                  <div className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    Team Members
+                  </div>
+                  <div className="mt-2 space-y-1 text-sm leading-6 text-slate-700">
+                    {teamMembers.map((member) => (
+                      <div key={member}>{member}</div>
+                    ))}
+                  </div>
                 </div>
+              </div>
             </div>
           </section>
 
@@ -912,42 +987,42 @@ export default function CapstoneProjectWebpage() {
             title="High-level System Pipeline"
             subtitle="The system is designed as a modular workflow over timestamped evidence rather than a single raw-video model call."
             right={<Pill tone="blue">Phase 2 focus highlighted</Pill>}
-            >
-                <div className="overflow-x-auto">
-                    <div className="flex min-w-max items-center gap-3 pb-2">
-                        {pipelineStages.map((stage, index) => (
-                            <React.Fragment key={stage.id}>
-                                <div
-                                    className={cx(
-                                        "w-56 shrink-0 rounded-2xl border p-4 shadow-sm",
-                                        stage.status === "current"
-                                        ? "border-blue-200 bg-blue-50"
-                                        : stage.status === "completed"
-                                        ? "border-emerald-200 bg-emerald-50"
-                                        : "border-slate-200 bg-slate-50/80"
-            )}
           >
-            <div className="flex items-start justify-between gap-2">
-              <h3 className="text-sm font-semibold text-slate-900">
-                {stage.label}
-              </h3>
-              <span
-                className={cx(
-                  "inline-flex rounded-full px-2 py-1 text-[11px] font-medium ring-1 ring-inset",
-                  statusClasses(stage.status)
-                )}
-              >
-                        {stage.status}
-                    </span>
-                </div>
-            </div>
+            <div className="overflow-x-auto">
+              <div className="flex min-w-max items-center gap-3 pb-2">
+                {pipelineStages.map((stage, index) => (
+                  <React.Fragment key={stage.id}>
+                    <div
+                      className={cx(
+                        "w-56 shrink-0 rounded-2xl border p-4 shadow-sm",
+                        stage.status === "current"
+                          ? "border-blue-200 bg-blue-50"
+                          : stage.status === "completed"
+                          ? "border-emerald-200 bg-emerald-50"
+                          : "border-slate-200 bg-slate-50/80"
+                      )}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="text-sm font-semibold text-slate-900">
+                          {stage.label}
+                        </h3>
+                        <span
+                          className={cx(
+                            "inline-flex rounded-full px-2 py-1 text-[11px] font-medium ring-1 ring-inset",
+                            statusClasses(stage.status)
+                          )}
+                        >
+                          {stage.status}
+                        </span>
+                      </div>
+                    </div>
 
-            {index < pipelineStages.length - 1 ? (
-                        <div className="shrink-0 px-1 text-slate-400">→</div>
-                            ) : null}
-                        </React.Fragment>
-                    ))}
-                </div>
+                    {index < pipelineStages.length - 1 ? (
+                      <div className="shrink-0 px-1 text-slate-400">→</div>
+                    ) : null}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </SectionShell>
 
