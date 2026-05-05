@@ -6,10 +6,15 @@ const projectMeta = {
   subtitle:
     "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
   tagline:
-    "This project aims to build a conversational multimodal agent that answers user questions over lecture-style educational videos by first parsing multimedia content into structured, timestamped evidence and then grounding answers in the retrieved evidence.",
-  badges: ["Multimodal Agent", "Evidence Grounding", "Lecture Video QA"],
-  currentStage: "Phase 2 – Initial Multimedia Parsing Prototype",
-  status: "Work in Progress",
+    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, and Phase 3 builds retrieval and initial grounded QA on top of those units.",
+  badges: [
+    "Multimodal Agent",
+    "Evidence Grounding",
+    "Lecture Video QA",
+    "Temporal Retrieval",
+  ],
+  currentStage: "Phase 3 – Retrieval and Initial Grounded QA",
+  status: "Ongoing Project Webpage",
 };
 
 const teamMembers = [
@@ -43,41 +48,114 @@ const practicalMotivation = [
   "Provide answers with explicit supporting evidence rather than unsupported generation.",
 ];
 
+const competitiveRows = [
+  {
+    approach: "YouTube / platform transcript search",
+    limitation:
+      "Mainly searches speech transcript and does not integrate OCR or visual evidence.",
+    ourFocus:
+      "Combine transcript, OCR cues, visual references, and timestamps into unified evidence units.",
+  },
+  {
+    approach: "General LLM video summary",
+    limitation:
+      "Can summarize broadly but often lacks precise timestamp grounding and supporting evidence.",
+    ourFocus:
+      "Answer specific user questions with retrieved temporal evidence segments.",
+  },
+  {
+    approach: "Manual lecture review",
+    limitation:
+      "Accurate but time-consuming when users need to locate a concept, formula, or example quickly.",
+    ourFocus:
+      "Retrieve relevant lecture moments and show the evidence used for the answer.",
+  },
+];
+
+const baselineRows = [
+  {
+    item: "Baseline",
+    description:
+      "Transcript-only retrieval over ASR text. This gives us a simple comparison point for whether speech transcript alone is enough for localization and QA.",
+  },
+  {
+    item: "Current prototype",
+    description:
+      "Retrieval over timestamped evidence units that combine ASR transcript, OCR text, timestamp metadata, and visual references where available.",
+  },
+  {
+    item: "Future comparison",
+    description:
+      "Evaluate whether multimodal-derived evidence improves grounding and temporal localization compared with transcript-only retrieval.",
+  },
+];
+
+const datasetCards = [
+  {
+    label: "Current prototype dataset",
+    value: "1 fully processed lecture-style video",
+    detail:
+      "The current end-to-end prototype has been validated on one selected English lecture-style educational video about linear algebra.",
+  },
+  {
+    label: "Approximate duration",
+    value: "About 9–10 minutes",
+    detail:
+      "The video is long enough to test concept explanation, examples, visual teaching content, and temporal localization.",
+  },
+  {
+    label: "Content characteristics",
+    value: "Speech + visual teaching content",
+    detail:
+      "The video contains spoken explanation, on-screen text, and visual demonstrations, making it suitable for ASR, OCR, keyframe extraction, and evidence construction.",
+  },
+  {
+    label: "Planned expansion",
+    value: "More lecture-style videos",
+    detail:
+      "Later evaluation will add additional lecture-style videos to test whether retrieval and grounding generalize beyond the current prototype case.",
+  },
+];
+
+const futureApplications = [
+  "Lecture archive question answering",
+  "Meeting recording retrieval",
+  "Corporate training video QA",
+  "Court hearing or legal proceeding recording QA",
+  "Customer support video knowledge base",
+];
+
 const scopeIncluded = [
-  "A conversational interface for question answering over lecture-style educational videos.",
-  "Support for follow-up questions over previously uploaded multimedia content.",
-  "A multimedia parsing pipeline for videos and related screenshots or images.",
-  "Speech transcription, OCR, keyframe extraction, and evidence organization.",
-  "Timestamped evidence storage and indexing for retrieval.",
-  "Temporal evidence retrieval or localization for user queries.",
-  "Grounded answer generation using retrieved evidence.",
-  "Explicit multi-agent role design and orchestration logic for the end-to-end workflow.",
-  "Explainable responses through timestamps, snippets, and visual references.",
-  "Integration of the proposed capability into an existing multi-agent framework.",
+  "Lecture-style educational video question answering.",
+  "ASR transcript, OCR text, keyframe references, and timestamped evidence representation.",
+  "Evidence indexing and retrieval/localization over evidence units.",
+  "Initial grounded QA with evidence references.",
+  "A Multi-Agent-GPT-style bridge verified through CLI.",
+  "Explainable responses through timestamps, transcript snippets, OCR snippets, and visual references where available.",
 ];
 
 const scopeExcluded = [
   "Training a new multimodal foundation model from scratch.",
   "Large-scale distributed model training.",
-  "Full support for all video QA domains.",
-  "Highly optimized real-time processing of very long videos.",
-  "Production-grade cloud deployment infrastructure.",
+  "Full real-time long-video processing.",
+  "Production-grade deployment infrastructure.",
+  "Final multi-agent orchestration, which belongs to Phase 4.",
 ];
 
 const pipelineStages = [
   { id: "routing", label: "Agent Routing", status: "planned" },
-  { id: "parsing", label: "Multimedia Parsing", status: "current" },
+  { id: "parsing", label: "Multimedia Parsing", status: "completed" },
   {
     id: "evidence",
     label: "Timestamped Evidence Construction",
-    status: "current",
+    status: "completed",
   },
-  { id: "retrieval", label: "Retrieval / Localization", status: "upcoming" },
-  { id: "aggregation", label: "Evidence Aggregation", status: "upcoming" },
+  { id: "retrieval", label: "Retrieval / Localization", status: "current" },
+  { id: "aggregation", label: "Evidence Aggregation", status: "current" },
   {
     id: "answer",
     label: "Grounded Answer Generation",
-    status: "upcoming",
+    status: "current",
   },
 ];
 
@@ -93,18 +171,18 @@ const phaseTimeline = [
   {
     id: "phase2",
     title: "Phase 2: Initial Multimedia Parsing Prototype",
-    status: "current",
+    status: "completed",
     period: "28 Mar 2026 – 14 Apr 2026",
     summary:
-      "Initial parsing prototype focused on ASR, keyframe extraction, OCR, and first-version timestamped evidence units.",
+      "Converted lecture-video content into timestamped evidence units using transcript, OCR, keyframes, and time alignment.",
   },
   {
     id: "phase3",
     title: "Phase 3: Retrieval / Localization Module and Evidence Indexing",
-    status: "upcoming",
+    status: "current",
     period: "15 Apr 2026 – 5 May 2026",
     summary:
-      "Index parsed evidence and support retrieval/localization over temporal evidence units.",
+      "Built evidence indexing, temporal retrieval, and a CLI-verified initial grounded QA workflow.",
   },
   {
     id: "phase4",
@@ -241,25 +319,25 @@ const phaseDetails = {
 
   phase2: {
     summary:
-      "This is the current phase. The focus is on building the initial multimedia parsing prototype and producing the first usable timestamped evidence inputs for downstream integration.",
+      "Phase 2 is completed at the prototype level. The key achievement is converting raw lecture-video content into timestamped evidence units that can support downstream retrieval and grounded QA.",
     tasks: [
       "Implement the initial multimedia parsing pipeline.",
       "Support basic speech-to-text for videos.",
       "Support keyframe extraction.",
       "Support OCR for images and selected video frames.",
       "Define the first version of timestamped evidence units and storage format.",
-      "Prepare materials for current progress communication / progress update.",
+      "Prepare materials for progress communication / progress update.",
     ],
     memberDetails: {
       A: {
         label: "Role A: ASR — Han Jiapeng",
         status: "prototype output",
         responsibility:
-          "Maintain the ASR pipeline and deliver transcript JSON in the agreed schema for downstream integration.",
+          "Produce the speech-transcript evidence needed for later retrieval and grounding.",
         workDone:
-          "The source video was switched to the unified linear_algebra.mp4 used by the current Phase 2 pipeline. The transcript was regenerated from the new source while keeping the agreed output tags and ASR code unchanged. The current transcript.json contains 148 segments and is aligned to the same timeline used by Roles B and C.",
+          "Generated the transcript segments for the selected linear algebra lecture video and aligned them with the shared video timeline used by the rest of the team.",
         output:
-          "transcript.json with stable fields: segment_id, start, end, and text.",
+          "Timestamped transcript segments that serve as the speech-based evidence source.",
         blockers:
           "This remains a Phase 2 baseline result. The source content changed because the video source changed, not because the transcript schema changed. Optional later cleanup may still be needed for segmentation and transcription quality.",
         nextStep:
@@ -269,11 +347,11 @@ const phaseDetails = {
         label: "Role B: Keyframe Extraction + OCR — Li Siyao",
         status: "prototype output",
         responsibility:
-          "Implement keyframe extraction and OCR over the unified video source and produce timestamped visual parsing outputs.",
+          "Extract visual evidence from the lecture video through selected keyframes and OCR text.",
         workDone:
-          "A runnable keyframe extraction + OCR pipeline has been completed for the unified linear_algebra.mp4 source. The current run produced 51 timestamped OCR/frame items together with extracted keyframe images and frame_ocr_mapping.json / .csv outputs.",
+          "Produced timestamped visual evidence from the selected lecture video, including keyframes and OCR text that can later be aligned with the transcript.",
         output:
-          "Structured OCR mapping with frame, timestamp_sec, ocr_text, scene_score, and reason, plus extracted keyframe images.",
+          "Timestamped visual/OCR evidence for integration into evidence units.",
         blockers:
           "OCR quality is still uneven on lecture-video frames. Some outputs contain noise, mixed-language fragments, or incomplete text, so later cleaning and deduplication are still needed.",
         nextStep:
@@ -283,11 +361,11 @@ const phaseDetails = {
         label: "Role C: Evidence Schema + Parsing Integration — Yu Zhengting",
         status: "prototype output",
         responsibility:
-          "Integrate Role A and Role B outputs into timestamp-aligned evidence units for downstream retrieval.",
+          "Integrate speech and visual evidence into a unified timestamped evidence representation.",
         workDone:
-          "Completed the first A/B integration pass by aligning transcript segments with OCR/keyframe outputs by timestamp. The current pipeline emits progress2_evidence_units.jsonl and an alignment report for the same linear_algebra video source. The current report shows 148 transcript segments, 51 OCR items matched, and 26 evidence units containing OCR text.",
+          "Aligned transcript segments with visual/OCR evidence by timestamp and produced the first version of structured evidence units. The current prototype contains 148 timestamped evidence units, including 26 units with OCR text.",
         output:
-          "Evidence schema v1 baseline with one evidence unit per ASR segment, plus an alignment report.",
+          "A unified evidence-unit representation for Phase 3 indexing and retrieval.",
         blockers:
           "The quality of integrated evidence still depends on upstream OCR quality, and the current unit granularity may be too fine for later retrieval in some cases.",
         nextStep:
@@ -297,11 +375,11 @@ const phaseDetails = {
         label: "Role D: Coordination + Webpage + Demo/Progress Materials — Bi Yifeng (Team Lead)",
         status: "completed",
         responsibility:
-          "Coordinate the current phase, maintain the webpage, and prepare progress/demo materials.",
+          "Coordinate the phase, maintain the webpage, and prepare progress/demo materials.",
         workDone:
-          "The webpage and progress communication materials are being updated to reflect the real current status of the A/B/C workstreams and the current Phase 2 prototype baseline.",
+          "Coordinated the Phase 2 workstreams, helped align member outputs, and updated the webpage so the parsing and evidence-construction results are presented as an executive summary rather than an internal file list.",
         output:
-          "Updated project webpage structure and current phase communication materials.",
+          "Updated project webpage structure and progress communication materials.",
         blockers:
           "The webpage must remain incremental because member outputs do not finish at the same time and need to be synchronized carefully before presentation.",
         nextStep:
@@ -311,102 +389,146 @@ const phaseDetails = {
     outputs: {
       transcript: {
         status: "prototype output",
-        kind: "JSON sample",
-        content: [
-          {
-            segment_id: 1,
-            start: 0.0,
-            end: 15.84,
-            text: "The fundamental root of it all building block for linear algebra is the vector.",
-          },
-          {
-            segment_id: 2,
-            start: 15.84,
-            end: 19.56,
-            text: "So it's worth making sure that we're all on the same page about what exactly a vector",
-          },
-        ],
+        kind: "speech evidence",
+        content:
+          "The selected lecture video was converted into 148 timestamped transcript segments. These segments provide the main speech-based evidence for retrieval and grounded QA.",
       },
       ocr: {
         status: "prototype output",
-        kind: "JSON sample",
-        content: [
-          {
-            frame: "frame_00000_00000.00s.jpg",
-            timestamp_sec: 0.0,
-            ocr_text: "@Solaras70",
-            scene_score: 1.0,
-            reason: "first_sample",
-          },
-          {
-            frame: "frame_00001_00001.97s.jpg",
-            timestamp_sec: 1.97,
-            ocr_text:
-              "ZOTAR BY ERY ASS oi 听 译 、 时 间 轴 、 @sscnse of near As 起 ra 3BluelBrc 3",
-            scene_score: 0.1891,
-            reason: "scene_change",
-          },
-        ],
+        kind: "visual text evidence",
+        content:
+          "The visual parsing output contains 51 OCR items aligned to the video timeline. OCR is usable for evidence construction, although noisy frame text remains a refinement issue.",
       },
       keyframe: {
         status: "prototype output",
-        kind: "extracted frames",
-        content: [
-          {
-            frame: "frame_00000_00000.00s.jpg",
-            timestamp_sec: 0.0,
-          },
-          {
-            frame: "frame_00010_00053.15s.jpg",
-            timestamp_sec: 53.15,
-          },
-          {
-            frame: "frame_00050_00568.94s.jpg",
-            timestamp_sec: 568.94,
-          },
-        ],
+        kind: "visual evidence",
+        content:
+          "Selected keyframes provide visual context for lecture moments and can later be surfaced as visual supporting evidence.",
       },
       evidenceUnit: {
         status: "prototype output",
-        kind: "JSONL sample",
-        content: {
-          unit_id: "u_00001",
-          video_id: "linear_algebra",
-          start_time: 0.0,
-          end_time: 15.84,
-          asr_segment_id: 1,
-          asr_text:
-            "The fundamental root of it all building block for linear algebra is the vector.",
-          ocr_text:
-            "@Solaras70\nZOTAR BY ERY ASS oi 听 译 、 时 间 轴 、 @sscnse of near As 起 ra 3BluelBrc 3\n“Nhe introduction of mumibers as coordinates fis am act of violence.”",
-          keyframe_refs: [
-            "frame_00000_00000.00s.jpg",
-            "frame_00001_00001.97s.jpg",
-            "frame_00002_00005.91s.jpg",
-          ],
-        },
+        kind: "unified evidence representation",
+        content:
+          "Speech, OCR, visual references, and timestamps were aligned into 148 timestamped evidence units. This representation is the main handoff from Phase 2 to Phase 3 retrieval.",
       },
     },
     notes: [
-      "Current phase emphasis: Multimedia Parsing and Timestamped Evidence Construction.",
-      "A, B, and C now operate on one unified linear_algebra video source, so the Phase 2 parsing chain is aligned on the same timeline.",
-      "The current Phase 2 baseline now includes updated ASR output, real keyframe/OCR outputs, and an initial evidence-unit integration result.",
+      "Phase 2 emphasis: multimedia parsing and timestamped evidence construction.",
+      "The current prototype uses one selected linear algebra lecture video as the end-to-end validation case.",
+      "The Phase 2 result is not just a set of files; it is a reusable evidence representation for Phase 3 retrieval.",
     ],
     nextStep:
-      "Continue OCR cleanup, keep the transcript and evidence schema stable, and use the current evidence_units baseline for retrieval / localization in the next phase.",
+      "Use the evidence-unit representation as the retrieval base for Phase 3 while continuing to improve ASR/OCR quality and alignment.",
   },
 
   phase3: {
     summary:
-      "This phase will build indexing and retrieval/localization over parsed multimedia evidence.",
+      "Phase 3 is completed at the preliminary prototype level. It builds directly on the Phase 2 evidence units by indexing them, retrieving relevant temporal evidence, and generating initial grounded answers from retrieved evidence.",
     tasks: [
-      "Build indexing and retrieval over parsed multimedia evidence.",
-      "Support retrieval of relevant temporal evidence units.",
-      "Test retrieval/localization on selected lecture-video cases.",
-      "Refine interfaces between parsing, evidence storage, and retrieval.",
+      "Use the Phase 2 evidence units as the fixed input interface for retrieval.",
+      "Build an evidence index over timestamped evidence units.",
+      "Implement Top-K temporal evidence retrieval for selected user questions.",
+      "Generate initial grounded answers with supporting timestamped evidence.",
+      "Validate the retrieval and QA workflow through CLI-based tests.",
       "Prepare materials for Project Progress Update 2.",
     ],
-    notStarted: true,
+    memberDetails: {
+      A: {
+        label: "Direction 1: Evidence Indexing — Han Jiapeng",
+        status: "prototype output",
+        responsibility:
+          "Prepare the Phase 2 evidence units for retrieval and build the vector index used by downstream modules.",
+        workDone:
+          "Built an evidence index from the cleaned Phase 2 evidence units for the selected linear algebra lecture video. This index is used as the retrieval backend for the later retrieval and QA workflow.",
+        output:
+          "A reusable indexed evidence representation for the selected lecture-video prototype.",
+        blockers:
+          "The current minimum demo can return timestamps and ASR/OCR evidence. More complete visual keyframe references will be improved in later phases.",
+        nextStep:
+          "Keep the evidence schema and index interface stable for Phase 4 integration.",
+      },
+      B: {
+        label: "Direction 2: Retrieval / Localization — Li Siyao",
+        status: "prototype output",
+        responsibility:
+          "Implement temporal evidence retrieval over the evidence index and expose a stable retrieval interface for the QA agent.",
+        workDone:
+          "Implemented a VideoEvidenceRetriever that returns Top-K temporal evidence segments with timestamps, transcript/OCR snippets, retrieval scores, and support labels. Sample questions such as vector definition and vector addition were used for validation.",
+        output:
+          "A retrieval module that returns timestamped evidence for downstream grounded QA.",
+        blockers:
+          "Top-K retrieval can find relevant evidence, but Top-1 ranking and OCR-oriented retrieval still need refinement.",
+        nextStep:
+          "Improve reranking, OCR-aware retrieval, and keyframe reference display.",
+      },
+      C: {
+        label: "Direction 3: Agent Integration + Grounded QA — Yu Zhengting",
+        status: "prototype output",
+        responsibility:
+          "Connect the retrieval module to an initial agent QA workflow and package it as a Multi-Agent-GPT-style bridge.",
+        workDone:
+          "Implemented an initial QA agent workflow that calls retrieval, selects supporting evidence, and generates grounded answers with timestamped support. The Multi-Agent-GPT-style bridge has been verified through CLI.",
+        output:
+          "Initial grounded QA workflow and Multi-Agent-GPT-style bridge for evidence-based video QA.",
+        blockers:
+          "This is an initial Phase 3 integration rather than the full Phase 4 multi-agent orchestration. Local webpage behavior may vary with Gradio package versions, but CLI validation is stable.",
+        nextStep:
+          "Use this workflow as the base for Phase 4 routing, retrieval, grounding, and verification agents.",
+      },
+      D: {
+        label: "Direction 4: Coordination + Evaluation + Webpage — Bi Yifeng (Team Lead)",
+        status: "completed",
+        responsibility:
+          "Coordinate Phase 3 planning, divide tasks, verify member outputs, provide feedback, and maintain the project webpage as an ongoing progress artifact.",
+        workDone:
+          "Planned the Phase 3 work breakdown, assigned the four directions, tested and verified Directions 1–3, identified remaining limitations, and updated the frontend webpage to reflect the current project status.",
+        output:
+          "Phase 3 task plan, validation notes, testing feedback, progress summary, and updated React project webpage.",
+        blockers:
+          "The webpage must avoid overstating maturity: the current implementation is a preliminary retrieval and grounded QA workflow, not the final multi-agent system.",
+        nextStep:
+          "Prepare Progress Update 2 materials and keep the webpage aligned with Phase 4 work.",
+      },
+    },
+    outputTitles: {
+      transcript: "Indexing Output",
+      ocr: "Retrieval Output",
+      keyframe: "Grounded QA Output",
+      evidenceUnit: "Validation Notes",
+    },
+    outputs: {
+      transcript: {
+        status: "prototype output",
+        kind: "evidence indexing",
+        content:
+          "The Phase 2 evidence units were indexed so the system can search relevant lecture moments for a user question.",
+      },
+      ocr: {
+        status: "prototype output",
+        kind: "retrieval sample",
+        content:
+          "For the query about vector addition, the retriever returned relevant timestamped evidence in the Top-K results, including a segment explaining coordinate-wise addition.",
+      },
+      keyframe: {
+        status: "prototype output",
+        kind: "grounded QA sample",
+        content:
+          "The initial QA workflow generated an answer about vector addition and cited supporting evidence from retrieved transcript segments such as 400.64s–405.92s and 90.52s–94.90s.",
+      },
+      evidenceUnit: {
+        status: "verified",
+        kind: "phase validation",
+        content:
+          "The CLI tests verified the core path from indexed evidence to retrieval and grounded answer generation. Remaining work includes reranking, OCR cleanup, visual reference display, and full Phase 4 multi-agent orchestration.",
+      },
+    },
+    notes: [
+      "Phase 3 is built directly on top of Phase 2 evidence units rather than replacing them.",
+      "The current QA agent is grounded on multimodal-derived evidence units: ASR text, OCR text, visual references, and timestamps.",
+      "The system has been validated through CLI outputs even if local Gradio behavior varies across machines.",
+    ],
+    nextStep:
+      "Proceed to Phase 4 by turning the current retrieval and grounded QA workflow into fuller multi-agent orchestration with routing, retrieval, answer grounding, and verification roles.",
   },
 
   phase4: {
@@ -464,21 +586,19 @@ const phaseDetails = {
 
 const evidenceUnitDesign = {
   description:
-    "The current project stage is not presented as a full QA product. The immediate goal is to parse lecture videos into structured timestamped evidence so that later retrieval, localization, and grounded answer generation can operate on explicit, reusable evidence units.",
+    "At the current stage, an evidence unit is the bridge between raw multimedia and grounded QA. It represents a short lecture moment with a time range, speech transcript, optional OCR text, and optional visual reference. Phase 2 constructs these units; Phase 3 indexes and retrieves them.",
   sample: {
-    unit_id: "u_001",
-    video_id: "video_01",
-    start_time: 12.4,
-    end_time: 18.9,
-    asr_text: "Today we introduce Bayes formula.",
-    ocr_text: ["Bayes Rule"],
-    keyframe_refs: ["frame_001.png"],
+    moment: "short lecture segment",
+    time_range: "400.64s–405.92s",
+    speech_evidence: "So the new vector has coordinates 1 plus 3 and 2 plus negative 1.",
+    visual_text: "optional OCR text when available",
+    visual_reference: "optional keyframe reference when available",
   },
   explanations: [
-    "ASR text captures spoken content.",
-    "OCR text captures slide or screen text.",
-    "Keyframe references link evidence back to visual context.",
-    "Timestamps make retrieval, localization, and explanation possible.",
+    "Temporal localization: each answer can point back to a lecture time range.",
+    "Evidence grounding: answers are supported by transcript and OCR snippets.",
+    "Multimodal-derived QA: the agent answers from structured ASR/OCR/keyframe evidence rather than directly sending raw audio or raw images to a model.",
+    "Future visual grounding: keyframe references can be surfaced more clearly in later phases.",
   ],
 };
 
@@ -486,16 +606,18 @@ const challenges = [
   "ASR errors on domain-specific terms.",
   "Repeated or noisy OCR across frames.",
   "Temporal alignment between ASR and OCR.",
-  "Choosing practical evidence granularity.",
-  "Incremental integration across workstreams.",
+  "Top-1 retrieval ranking is not always the most accurate even when Top-K contains relevant evidence.",
+  "Visual keyframe references are not fully surfaced in the current answer display.",
+  "Local Gradio webpage behavior can vary by Python package version; CLI validation is currently more stable.",
 ];
 
 const nextSteps = [
-  "Stabilize parsing outputs.",
-  "Add OCR results when available.",
-  "Finalize evidence schema v1.",
-  "Continue retrieval / localization in later phases.",
-  "Keep the webpage updated incrementally.",
+  "Keep the Phase 2 evidence-unit schema and Phase 3 retrieval interface stable.",
+  "Improve OCR cleaning and OCR-aware retrieval.",
+  "Refine reranking and evidence aggregation for better Top-1 results.",
+  "Integrate visual evidence references more clearly into the answer display.",
+  "Move into Phase 4 full multi-agent orchestration: routing, retrieval, grounding, and verification agents.",
+  "Expand the dataset beyond the current prototype video for broader validation.",
 ];
 
 function cx(...classes) {
@@ -513,6 +635,7 @@ function statusClasses(status) {
     "pending integration": "bg-slate-100 text-slate-700 ring-slate-200",
     "pending update": "bg-slate-100 text-slate-700 ring-slate-200",
     "prototype output": "bg-blue-50 text-blue-700 ring-blue-200",
+    verified: "bg-emerald-50 text-emerald-700 ring-emerald-200",
     placeholder: "bg-slate-100 text-slate-700 ring-slate-200",
     pending: "bg-slate-100 text-slate-700 ring-slate-200",
     "prototype planning": "bg-sky-50 text-sky-700 ring-sky-200",
@@ -853,14 +976,15 @@ export default function CapstoneProjectWebpage() {
   const [openSections, setOpenSections] = useState({
     motivation: false,
     scope: false,
+    extensions: false,
     evidence: false,
     challenges: false,
   });
 
   const [openPhases, setOpenPhases] = useState({
     phase1: false,
-    phase2: true,
-    phase3: false,
+    phase2: false,
+    phase3: true,
     phase4: false,
     phase5: false,
     phase6: false,
@@ -912,8 +1036,9 @@ export default function CapstoneProjectWebpage() {
                     Current emphasis
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <Pill tone="blue">Multimedia Parsing</Pill>
-                    <Pill tone="blue">Timestamped Evidence Construction</Pill>
+                    <Pill tone="blue">Evidence Indexing</Pill>
+                    <Pill tone="blue">Temporal Retrieval</Pill>
+                    <Pill tone="blue">Initial Grounded QA</Pill>
                   </div>
                 </div>
 
@@ -930,6 +1055,25 @@ export default function CapstoneProjectWebpage() {
               </div>
             </div>
           </section>
+
+          <SectionShell
+            title="Latest Update: Phase 3 Retrieval and Initial Grounded QA"
+            subtitle="This section makes the webpage read as an ongoing project progress page rather than a static report."
+            right={<Pill tone="blue">Current update</Pill>}
+          >
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+              <InfoCard title="What changed since Phase 2">
+                <p>
+                  Phase 2 produced timestamped evidence units from ASR, OCR, keyframes, and timestamps. Phase 3 now uses those units as the retrieval base: the team built an evidence index, implemented temporal retrieval, and connected retrieval results to an initial grounded QA agent.
+                </p>
+              </InfoCard>
+              <InfoCard title="Current verified demo">
+                <p>
+                  The CLI workflow has been verified with lecture questions such as vector definition and vector addition. The system can return a grounded answer together with supporting timestamped evidence.
+                </p>
+              </InfoCard>
+            </div>
+          </SectionShell>
 
           <SectionShell
             title="Project Overview"
@@ -965,8 +1109,8 @@ export default function CapstoneProjectWebpage() {
           </SectionShell>
 
           <CollapsibleSection
-            title="Why This Project / Practical Motivation"
-            subtitle="The target use cases are practical learning scenarios where users need both an answer and supporting evidence."
+            title="Why This Project / Project Significance"
+            subtitle="This section combines motivation and a light competitive analysis so the value of the project is clear before implementation details."
             isOpen={openSections.motivation}
             onToggle={() => toggleSection("motivation")}
           >
@@ -981,12 +1125,39 @@ export default function CapstoneProjectWebpage() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200">
+              <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                <thead className="bg-slate-50 text-xs uppercase tracking-[0.08em] text-slate-500">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Existing approach</th>
+                    <th className="px-4 py-3 font-semibold">Limitation</th>
+                    <th className="px-4 py-3 font-semibold">Our focus</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {competitiveRows.map((row) => (
+                    <tr key={row.approach}>
+                      <td className="px-4 py-4 font-medium text-slate-900">
+                        {row.approach}
+                      </td>
+                      <td className="px-4 py-4 text-slate-700">
+                        {row.limitation}
+                      </td>
+                      <td className="px-4 py-4 text-slate-700">
+                        {row.ourFocus}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CollapsibleSection>
 
           <SectionShell
             title="High-level System Pipeline"
             subtitle="The system is designed as a modular workflow over timestamped evidence rather than a single raw-video model call."
-            right={<Pill tone="blue">Phase 2 focus highlighted</Pill>}
+            right={<Pill tone="blue">Phase 2–3 progress highlighted</Pill>}
           >
             <div className="overflow-x-auto">
               <div className="flex min-w-max items-center gap-3 pb-2">
@@ -1027,8 +1198,40 @@ export default function CapstoneProjectWebpage() {
           </SectionShell>
 
           <SectionShell
+            title="Baseline and Evaluation Plan"
+            subtitle="This lightweight baseline plan prepares later evaluation without overstating the current prototype maturity."
+          >
+            <div className="grid gap-4 lg:grid-cols-3">
+              {baselineRows.map((row) => (
+                <InfoCard key={row.item} title={row.item}>
+                  <p>{row.description}</p>
+                </InfoCard>
+              ))}
+            </div>
+          </SectionShell>
+
+          <SectionShell
+            title="Dataset Description"
+            subtitle="This section states what data the current prototype has been tested on and what will be expanded later."
+            right={<Pill tone="emerald">Added for feedback</Pill>}
+          >
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {datasetCards.map((card) => (
+                <InfoCard key={card.label} title={card.label}>
+                  <div className="text-lg font-semibold text-slate-950">
+                    {card.value}
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {card.detail}
+                  </p>
+                </InfoCard>
+              ))}
+            </div>
+          </SectionShell>
+
+          <SectionShell
             title="Timeline / Milestones"
-            subtitle="This is the core progress section of the webpage. Each phase can be expanded independently for tasks, member contributions, outputs, and next steps."
+            subtitle="Dataset and evaluation context are shown before this progress section, following the latest review suggestions. Each phase can still be expanded independently."
             right={<Pill tone="slate">Core section</Pill>}
           >
             <div className="space-y-4">
@@ -1076,8 +1279,26 @@ export default function CapstoneProjectWebpage() {
           </CollapsibleSection>
 
           <CollapsibleSection
+            title="Potential Extensions"
+            subtitle="These are not current implementation promises, but they show why the approach could matter beyond one classroom demo."
+            isOpen={openSections.extensions}
+            onToggle={() => toggleSection("extensions")}
+          >
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {futureApplications.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white p-4 text-sm font-medium leading-6 text-slate-700 shadow-sm"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection
             title="Evidence Unit Design"
-            subtitle="The current prototype stage is centered on converting raw multimedia into reusable timestamped evidence units."
+            subtitle="Evidence units are no longer only a Phase 2 output; they are now the retrieval base for Phase 3."
             isOpen={openSections.evidence}
             onToggle={() => toggleSection("evidence")}
           >
@@ -1086,8 +1307,7 @@ export default function CapstoneProjectWebpage() {
                 <p>{evidenceUnitDesign.description}</p>
 
                 <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 text-sm leading-6 text-blue-900">
-                  The page intentionally presents this as evidence construction work,
-                  not as a fully completed end-to-end QA product.
+                  The current QA agent answers from retrieved multimodal-derived evidence units. It does not directly send raw audio or raw images to a multimodal model for end-to-end reasoning.
                 </div>
               </InfoCard>
 
