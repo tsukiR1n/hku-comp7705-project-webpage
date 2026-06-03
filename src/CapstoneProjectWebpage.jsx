@@ -6,21 +6,21 @@ const projectMeta = {
   subtitle:
     "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
   tagline:
-    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, and Phase 3 builds retrieval and initial grounded QA on top of those units.",
+    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, Phase 3 built retrieval and initial grounded QA, and Phase 4 now organizes these capabilities into a coordinator-based multi-agent orchestration prototype.",
   badges: [
     "Multimodal Agent",
     "Evidence Grounding",
     "Lecture Video QA",
     "Temporal Retrieval",
   ],
-  currentStage: "Phase 3 – Retrieval and Initial Grounded QA",
+  currentStage: "Phase 4 – Multi-Agent Orchestration Prototype",
   status: "Ongoing Project Webpage",
 };
 
 const teamMembers = [
   "Bi Yifeng (Team Lead)",
   "Han Jiapeng",
-  "Li Siyao",
+  "Liu Mingxuan",
   "Yu Zhengting",
 ];
 
@@ -139,18 +139,18 @@ const scopeExcluded = [
   "Large-scale distributed model training.",
   "Full real-time long-video processing.",
   "Production-grade deployment infrastructure.",
-  "Final multi-agent orchestration, which belongs to Phase 4.",
+  "Production-grade fully autonomous multi-agent orchestration.",
 ];
 
 const pipelineStages = [
-  { id: "routing", label: "Agent Routing", status: "planned" },
+  { id: "routing", label: "Agent Routing", status: "current" },
   { id: "parsing", label: "Multimedia Parsing", status: "completed" },
   {
     id: "evidence",
     label: "Timestamped Evidence Construction",
     status: "completed",
   },
-  { id: "retrieval", label: "Retrieval / Localization", status: "current" },
+  { id: "retrieval", label: "Retrieval / Localization", status: "completed" },
   { id: "aggregation", label: "Evidence Aggregation", status: "current" },
   {
     id: "answer",
@@ -179,7 +179,7 @@ const phaseTimeline = [
   {
     id: "phase3",
     title: "Phase 3: Retrieval / Localization Module and Evidence Indexing",
-    status: "current",
+    status: "completed",
     period: "15 Apr 2026 – 5 May 2026",
     summary:
       "Built evidence indexing, temporal retrieval, and a CLI-verified initial grounded QA workflow.",
@@ -187,10 +187,10 @@ const phaseTimeline = [
   {
     id: "phase4",
     title: "Phase 4: Multi-Agent Orchestration and Interim Prototype",
-    status: "upcoming",
+    status: "current",
     period: "6 May 2026 – 1 Jun 2026",
     summary:
-      "Integrate routing, parsing, retrieval, and answer grounding into an end-to-end interim prototype.",
+      "Implemented the main structure of a coordinator-based multi-agent orchestration prototype with EvidenceStore, RetrievalAgent, routing, aggregation, grounding, verification, and agent logs.",
   },
   {
     id: "phase5",
@@ -344,7 +344,7 @@ const phaseDetails = {
           "Keep the current schema stable and support downstream retrieval / localization based on the updated transcript.",
       },
       B: {
-        label: "Role B: Keyframe Extraction + OCR — Li Siyao",
+        label: "Role B: Keyframe Extraction + OCR — Liu Mingxuan",
         status: "prototype output",
         responsibility:
           "Extract visual evidence from the lecture video through selected keyframes and OCR text.",
@@ -448,7 +448,7 @@ const phaseDetails = {
           "Keep the evidence schema and index interface stable for Phase 4 integration.",
       },
       B: {
-        label: "Direction 2: Retrieval / Localization — Li Siyao",
+        label: "Direction 2: Retrieval / Localization — Liu Mingxuan",
         status: "prototype output",
         responsibility:
           "Implement temporal evidence retrieval over the evidence index and expose a stable retrieval interface for the QA agent.",
@@ -533,15 +533,112 @@ const phaseDetails = {
 
   phase4: {
     summary:
-      "This phase will integrate routing, parsing, retrieval, and answer grounding into an interim end-to-end prototype.",
+      "Phase 4 implements the main structure of a coordinator-based multi-agent orchestration prototype. It reuses the Phase 2 evidence units and Phase 3 retrieval / grounded QA workflow, and organizes them into explicit routing, retrieval, evidence aggregation, answer grounding, verification, final output, and agent-log modules. The implementation should be described as an integration-stage prototype rather than a production-level system, because full Chroma-backed end-to-end reproducibility still requires path, dependency, and runbook cleanup.",
     tasks: [
-      "Implement the interaction flow for routing, parsing, retrieval, and answer grounding.",
-      "Integrate the lecture-video QA capability into the existing framework.",
-      "Improve end-to-end query handling.",
-      "Support timestamped or evidence-referenced answers.",
-      "Prepare interim report and presentation materials.",
+      "Reuse the Phase 2/3 evidence units and retrieval interface instead of rebuilding ASR, OCR, keyframe extraction, or the basic retrieval backend.",
+      "Implement an EvidenceStore as the source-of-truth layer for evidence-unit lookup and metadata enrichment.",
+      "Wrap the Phase 3 VideoEvidenceRetriever as a RetrievalAgent with a standardized RetrievalPlan and RetrievalResult interface.",
+      "Implement QueryRouter, EvidenceAggregator, AnswerGroundingAgent, VerificationAgent, and Phase4Orchestrator modules for a clearer coordinator-based workflow.",
+      "Return FinalOutput with route plan, retrieval results, evidence bundle, grounded answer, verification result, and agent logs.",
+      "Validate the orchestration structure through unit tests and CLI demo runs, while documenting remaining path and reproducibility risks.",
     ],
-    notStarted: true,
+    memberDetails: {
+      A: {
+        label: "Role A: EvidenceStore — Han Jiapeng",
+        status: "prototype output",
+        responsibility:
+          "Provide the evidence source-of-truth layer for Phase 4, so upper-level agents can look up complete evidence-unit metadata by unit_id.",
+        workDone:
+          "Implemented an EvidenceStore that can load the 148 integrated Phase 3 evidence units from JSONL, normalize ASR/OCR/timestamp/keyframe metadata, and provide lookup APIs such as evidence retrieval by unit_id and metadata enrichment for retrieval results.",
+        output:
+          "EvidenceStore module for evidence-unit lookup, metadata access, and keyframe-reference support.",
+        blockers:
+          "The module is usable with an explicit JSONL path, but the submitted notes and default paths need to be aligned with the actual project directory before the whole Phase 4 workflow is fully reproducible.",
+        nextStep:
+          "Confirm the final evidence JSONL path and keep the EvidenceStore interface stable for orchestration and demo runs.",
+      },
+      B: {
+        label: "Role B: RetrievalAgent — Liu Mingxuan",
+        status: "partial prototype",
+        responsibility:
+          "Wrap the Phase 3 VideoEvidenceRetriever into a Phase 4 RetrievalAgent interface so the orchestrator can call retrieval through a standardized plan/result format.",
+        workDone:
+          "Implemented RetrievalPlan and RetrievalAgent-style logic that supports retrieval modes such as ASR priority and OCR priority, returns standardized RetrievalResult objects, and records backend labels and warnings for downstream grounding and verification.",
+        output:
+          "RetrievalAgent wrapper and sample retrieval outputs for connecting Phase 3 retrieval to Phase 4 orchestration.",
+        blockers:
+          "The wrapper code exists, but standalone execution in the submitted folder layout still has import/path issues when locating the Phase 3 retrieval module. This should be treated as an integration and runbook issue rather than a design failure.",
+        nextStep:
+          "Clean up the import path or document the exact path mapping from Phase 4 to the Phase 3 VideoRAG / VideoEvidenceRetriever backend.",
+      },
+      C: {
+        label: "Role C: Orchestration Agents — Yu Zhengting",
+        status: "prototype output",
+        responsibility:
+          "Implement the visible Phase 4 orchestration layer that routes questions, aggregates evidence, grounds answers, verifies support, and returns final outputs with agent logs.",
+        workDone:
+          "Implemented QueryRouter, EvidenceAggregator, AnswerGroundingAgent, VerificationAgent, Phase4Orchestrator, CLI demo support, and unit tests. The workflow can produce structured FinalOutput with route plan, retrieval result, evidence bundle, grounded answer, verification result, and agent logs.",
+        output:
+          "Coordinator-based multi-agent orchestration prototype with tested router / aggregator / grounding / verification components and CLI demo capability.",
+        blockers:
+          "The current workspace can run the orchestration with fallback / explicit evidence JSONL, but the real Chroma-backed end-to-end path is not fully reproducible as-is due to path and folder-name mismatches.",
+        nextStep:
+          "Align the runbook and paths for Han / Liu / Yu folders and the Phase 3 VideoRAG backend so the Chroma-backed demo can be reproduced consistently.",
+      },
+      D: {
+        label: "Role D: Coordination + Webpage + Progress Integration — Bi Yifeng (Team Lead)",
+        status: "completed",
+        responsibility:
+          "Coordinate Phase 4 progress, review whether the implementation matches the plan, identify reproducibility risks, and update the project webpage and presentation narrative without overstating system maturity.",
+        workDone:
+          "Reviewed the Phase 4 member outputs against the Phase 4 plan, clarified the implemented / partially implemented / needs-confirmation status of major modules, and updated the webpage to present Phase 4 as an integration-stage prototype with clear limitations.",
+        output:
+          "Phase 4 progress summary, updated webpage content, and cautious presentation wording for interim communication.",
+        blockers:
+          "Some runtime details still require teammate confirmation, including Chroma path mapping, Phase 4 folder naming, requirements, and final demo commands.",
+        nextStep:
+          "Collect a cleaned runbook from module owners and keep the webpage aligned with the final reproducible demo status.",
+      },
+    },
+    outputTitles: {
+      transcript: "EvidenceStore Output",
+      ocr: "RetrievalAgent Output",
+      keyframe: "Orchestration Output",
+      evidenceUnit: "Validation Notes",
+    },
+    outputs: {
+      transcript: {
+        status: "prototype output",
+        kind: "evidence lookup",
+        content:
+          "The EvidenceStore can load the 148 integrated Phase 3 evidence units and provide evidence lookup / metadata enrichment for downstream agents.",
+      },
+      ocr: {
+        status: "partial prototype",
+        kind: "retrieval wrapper",
+        content:
+          "The RetrievalAgent wrapper standardizes Phase 3 retrieval through RetrievalPlan and RetrievalResult, but the current submitted layout still needs import-path cleanup for standalone execution.",
+      },
+      keyframe: {
+        status: "prototype output",
+        kind: "multi-agent orchestration",
+        content:
+          "The Phase4Orchestrator connects QueryRouter, retrieval, EvidenceAggregator, AnswerGroundingAgent, VerificationAgent, FinalOutput, and agent logs into a coordinator-based workflow.",
+      },
+      evidenceUnit: {
+        status: "verified",
+        kind: "phase validation",
+        content:
+          "Member 3 unit tests pass and CLI execution works with explicit evidence JSONL. However, the full Chroma-backed end-to-end demo is not fully reproducible in the current workspace without path and runbook cleanup.",
+      },
+    },
+    notes: [
+      "Phase 4 is no longer plan-only; it contains implementation artifacts for EvidenceStore, RetrievalAgent, and orchestration agents.",
+      "The safest description is coordinator-based multi-agent orchestration prototype, not a fully autonomous production-level multi-agent system.",
+      "The main remaining risk is reproducibility: folder naming, import paths, Chroma backend path, dependencies, and runbook commands need final cleanup.",
+    ],
+    nextStep:
+      "Clean up Phase 4 path mapping and runbook instructions, confirm the Chroma-backed end-to-end demo command, and prepare stable interim presentation materials.",
   },
 
   phase5: {
@@ -586,7 +683,7 @@ const phaseDetails = {
 
 const evidenceUnitDesign = {
   description:
-    "At the current stage, an evidence unit is the bridge between raw multimedia and grounded QA. It represents a short lecture moment with a time range, speech transcript, optional OCR text, and optional visual reference. Phase 2 constructs these units; Phase 3 indexes and retrieves them.",
+    "At the current stage, an evidence unit is the bridge between raw multimedia and grounded QA. It represents a short lecture moment with a time range, speech transcript, optional OCR text, and optional visual reference. Phase 2 constructs these units; Phase 3 indexes and retrieves them; Phase 4 uses them through EvidenceStore, retrieval, aggregation, grounding, and verification modules.",
   sample: {
     moment: "short lecture segment",
     time_range: "400.64s–405.92s",
@@ -609,6 +706,7 @@ const challenges = [
   "Top-1 retrieval ranking is not always the most accurate even when Top-K contains relevant evidence.",
   "Visual keyframe references are not fully surfaced in the current answer display.",
   "Local Gradio webpage behavior can vary by Python package version; CLI validation is currently more stable.",
+  "Phase 4 path mapping and runbook cleanup are still needed for stable Chroma-backed end-to-end reproduction.",
 ];
 
 const nextSteps = [
@@ -616,7 +714,7 @@ const nextSteps = [
   "Improve OCR cleaning and OCR-aware retrieval.",
   "Refine reranking and evidence aggregation for better Top-1 results.",
   "Integrate visual evidence references more clearly into the answer display.",
-  "Move into Phase 4 full multi-agent orchestration: routing, retrieval, grounding, and verification agents.",
+  "Clean up Phase 4 path mapping, dependencies, and runbook instructions for stable end-to-end reproduction.",
   "Expand the dataset beyond the current prototype video for broader validation.",
 ];
 
@@ -635,6 +733,7 @@ function statusClasses(status) {
     "pending integration": "bg-slate-100 text-slate-700 ring-slate-200",
     "pending update": "bg-slate-100 text-slate-700 ring-slate-200",
     "prototype output": "bg-blue-50 text-blue-700 ring-blue-200",
+    "partial prototype": "bg-amber-50 text-amber-700 ring-amber-200",
     verified: "bg-emerald-50 text-emerald-700 ring-emerald-200",
     placeholder: "bg-slate-100 text-slate-700 ring-slate-200",
     pending: "bg-slate-100 text-slate-700 ring-slate-200",
@@ -984,8 +1083,8 @@ export default function CapstoneProjectWebpage() {
   const [openPhases, setOpenPhases] = useState({
     phase1: false,
     phase2: false,
-    phase3: true,
-    phase4: false,
+    phase3: false,
+    phase4: true,
     phase5: false,
     phase6: false,
     phase7: false,
@@ -1036,9 +1135,9 @@ export default function CapstoneProjectWebpage() {
                     Current emphasis
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <Pill tone="blue">Evidence Indexing</Pill>
-                    <Pill tone="blue">Temporal Retrieval</Pill>
-                    <Pill tone="blue">Initial Grounded QA</Pill>
+                    <Pill tone="blue">Agent Orchestration</Pill>
+                    <Pill tone="blue">Evidence Aggregation</Pill>
+                    <Pill tone="blue">Verification</Pill>
                   </div>
                 </div>
 
@@ -1057,19 +1156,19 @@ export default function CapstoneProjectWebpage() {
           </section>
 
           <SectionShell
-            title="Latest Update: Phase 3 Retrieval and Initial Grounded QA"
+            title="Latest Update: Phase 4 Multi-Agent Orchestration Prototype"
             subtitle="This section makes the webpage read as an ongoing project progress page rather than a static report."
             right={<Pill tone="blue">Current update</Pill>}
           >
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-              <InfoCard title="What changed since Phase 2">
+              <InfoCard title="What changed since Phase 3">
                 <p>
-                  Phase 2 produced timestamped evidence units from ASR, OCR, keyframes, and timestamps. Phase 3 now uses those units as the retrieval base: the team built an evidence index, implemented temporal retrieval, and connected retrieval results to an initial grounded QA agent.
+                  Phase 3 built evidence indexing, retrieval, and an initial grounded QA workflow. Phase 4 now organizes these capabilities into a coordinator-based orchestration prototype with EvidenceStore, RetrievalAgent, QueryRouter, EvidenceAggregator, AnswerGroundingAgent, VerificationAgent, FinalOutput, and agent logs.
                 </p>
               </InfoCard>
-              <InfoCard title="Current verified demo">
+              <InfoCard title="Current verified status">
                 <p>
-                  The CLI workflow has been verified with lecture questions such as vector definition and vector addition. The system can return a grounded answer together with supporting timestamped evidence.
+                  The Phase 4 structure is implemented at prototype level. Member 3 unit tests pass and the CLI can run with explicit evidence JSONL, while full Chroma-backed end-to-end reproducibility still requires path, dependency, and runbook cleanup.
                 </p>
               </InfoCard>
             </div>
@@ -1157,7 +1256,7 @@ export default function CapstoneProjectWebpage() {
           <SectionShell
             title="High-level System Pipeline"
             subtitle="The system is designed as a modular workflow over timestamped evidence rather than a single raw-video model call."
-            right={<Pill tone="blue">Phase 2–3 progress highlighted</Pill>}
+            right={<Pill tone="blue">Phase 2–4 progress highlighted</Pill>}
           >
             <div className="overflow-x-auto">
               <div className="flex min-w-max items-center gap-3 pb-2">
