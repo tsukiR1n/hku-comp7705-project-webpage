@@ -6,14 +6,14 @@ const projectMeta = {
   subtitle:
     "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
   tagline:
-    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, Phase 3 built retrieval and initial grounded QA, and Phase 4 now organizes these capabilities into a coordinator-based multi-agent orchestration prototype.",
+    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, Phase 3 built retrieval and initial grounded QA, Phase 4 organized these capabilities into a coordinator-based orchestration prototype, and Phase 5 completed evidence-quality refinement through full-video consistency validation, OCR comparison, formula OCR testing, and structured evidence validation.",
   badges: [
     "Multimodal Agent",
     "Evidence Grounding",
     "Lecture Video QA",
     "Temporal Retrieval",
   ],
-  currentStage: "Phase 4 – Multi-Agent Orchestration Prototype",
+  currentStage: "Phase 5 – Evidence Refinement Completed",
   status: "Ongoing Project Webpage",
 };
 
@@ -99,9 +99,9 @@ const datasetCards = [
   },
   {
     label: "Approximate duration",
-    value: "About 9–10 minutes",
+    value: "About 14 minutes",
     detail:
-      "The video is long enough to test concept explanation, examples, visual teaching content, and temporal localization.",
+      "The current Phase 5 rerun uses a target lecture video of about 848.92 seconds, long enough to test concept explanation, equations, visual teaching content, OCR, and temporal localization.",
   },
   {
     label: "Content characteristics",
@@ -187,18 +187,18 @@ const phaseTimeline = [
   {
     id: "phase4",
     title: "Phase 4: Multi-Agent Orchestration and Interim Prototype",
-    status: "current",
+    status: "completed",
     period: "6 May 2026 – 1 Jun 2026",
     summary:
       "Implemented the main structure of a coordinator-based multi-agent orchestration prototype with EvidenceStore, RetrievalAgent, routing, aggregation, grounding, verification, and agent logs.",
   },
   {
     id: "phase5",
-    title: "Phase 5: Evaluation and System Refinement",
-    status: "upcoming",
-    period: "2 Jun 2026 – 16 Jun 2026",
+    title: "Phase 5: Evaluation and Evidence Refinement",
+    status: "completed",
+    period: "2 Jun 2026 – 24 Jun 2026",
     summary:
-      "Refine stability, grounding quality, evaluation cases, and error analysis.",
+      "Completed evidence-quality refinement by validating full-video consistency, adding representative OCR comparison, testing formula OCR, propagating formula evidence, and producing a final quality review.",
   },
   {
     id: "phase6",
@@ -643,15 +643,109 @@ const phaseDetails = {
 
   phase5: {
     summary:
-      "This phase will refine system stability, grounding quality, and evaluation coverage.",
+      "Phase 5 completes the evidence-quality refinement stage. The stage goal is to turn the selected lecture video into a consistent, timestamped, multimodal evidence layer that can support later retrieval and prototype question answering. The work focuses on validating full-video consistency, improving visual evidence quality, comparing OCR models, testing formula / complex-text OCR, propagating accepted formula evidence into fine-grained and coarse-grained evidence representations, and documenting remaining limitations for the next stage.",
     tasks: [
-      "Improve system stability and response quality.",
-      "Refine retrieval, evidence aggregation, and answer grounding.",
-      "Design representative evaluation cases.",
-      "Analyze failure cases and improve robustness.",
-      "Prepare materials for Project Progress Update 3.",
+      "Validate whether the latest ASR, visual, slide, and evidence outputs are consistent with the selected lecture video.",
+      "Confirm that the visual pipeline covers the full target video and produces usable keyframes, OCR text, and slide intervals.",
+      "Use the existing ASR transcript as the speech input for the final evidence refinement workflow.",
+      "Run a representative Tesseract vs EasyOCR comparison on verified same-video frames.",
+      "Run pix2tex-based formula / complex-text OCR on representative manually selected crops.",
+      "Generate enhanced visual outputs that preserve Tesseract OCR, EasyOCR comparison fields, and quality-gated formula OCR fields.",
+      "Regenerate fine-grained evidence units and coarse-grained evidence blocks with formula text propagation.",
+      "Check parent-child consistency, OCR coverage, formula coverage, and alignment quality.",
+      "Prepare the final completion review, quality summary, and careful limitation wording for submission.",
     ],
-    notStarted: true,
+    memberDetails: {
+      A: {
+        label: "Role A: ASR Transcript and Evaluation Input — Han Jiapeng",
+        status: "reusable input",
+        responsibility:
+          "Provide the timestamped ASR transcript and model-comparison input used by the final structured evidence workflow.",
+        workDone:
+          "Provided a usable transcript with 228 timestamped transcript segments for the selected lecture video. The transcript was reused as the ASR input during the final visual and evidence reruns, and its final timestamp is consistent with the target video duration.",
+        output:
+          "The speech transcript and ASR model-comparison summary were used as the speech-evidence input for the final evidence refinement stage.",
+        blockers:
+          "No major blocker is recorded for the current stage. The submitted transcript was sufficient for downstream evidence rebuilding. Source-code-level ASR reproducibility materials were not included in the reviewed package, so they can be documented later if needed.",
+        nextStep:
+          "No immediate action is required for this submission. If time allows later, add the ASR running script, reference clips, WER/CER calculation details, and processing-time records for fuller reproducibility documentation.",
+      },
+      B: {
+        label: "Role B: Visual / OCR Refinement — Liu Mingxuan",
+        status: "completed prototype",
+        responsibility:
+          "Improve the slide-aware visual evidence pipeline through keyframe extraction, OCR preprocessing, general OCR comparison, formula OCR testing, OCR cleaning, and slide interval modeling.",
+        workDone:
+          "The visual pipeline was rerun on the correct target video and generated 46 keyframes, 46 slide intervals, full-video Tesseract OCR mapping, and verified coverage up to 848.85 seconds. EasyOCR was then installed and tested on 8 representative same-video frames, producing 8/8 successful comparisons against Tesseract. Formula OCR was tested with pix2tex on 8 manually selected formula / complex-text crops, with 6 reviewer-readable results retained and 2 low-quality results preserved only as raw traceability.",
+        output:
+          "Generated full-duration visual evidence, representative OCR model comparison results, formula OCR sample results, enhanced visual mapping, and slide-level formula traceability.",
+        blockers:
+          "EasyOCR was tested on representative frames rather than the full visual mapping. Formula OCR used manual crops instead of automatic full-video formula-region detection. Some slide-change scores are summarized in reports rather than fully serialized into the enhanced mapping.",
+        nextStep:
+          "Optional follow-up: expand OCR comparison to more frames, improve automatic formula-region detection, and serialize slide-change scores more directly in the final visual records.",
+      },
+      C: {
+        label: "Role C: Evidence Construction — Yu Zhengting",
+        status: "completed prototype",
+        responsibility:
+          "Integrate ASR transcript, structured OCR, slide intervals, formula OCR fields, and keyframe references into fine-grained evidence units and coarse-grained evidence blocks.",
+        workDone:
+          "The evidence construction workflow was rerun with the existing ASR transcript and verified same-video visual outputs. It produced 228 fine-grained evidence units and 47 coarse-grained evidence blocks, with 0 ASR-only units and valid parent-child relationships. After enhanced visual outputs were generated, the evidence workflow was rerun again so that accepted formula OCR results could propagate into the final evidence layer. The final enhanced evidence contains 53 units with formula text and 12 blocks with combined formula text.",
+        output:
+          "Generated a structured evidence set with timestamped transcript evidence, slide/OCR evidence, keyframe references, formula evidence, coarse evidence grouping, alignment statistics, and a final quality summary.",
+        blockers:
+          "Some boundary units may still attach OCR or keyframe references from adjacent slides when tolerance windows cross slide boundaries. Same-slide matching is prioritized, but not yet enforced as a hard constraint. Some final quality metrics were added through rerun-only post-processing rather than the original quality-report module.",
+        nextStep:
+          "Optional follow-up: tighten same-slide constraints near slide boundaries and integrate the added quality metrics into the main quality-report implementation.",
+      },
+      D: {
+        label: "Role D: Coordination, Verification, and Webpage Update — Bi Yifeng (Team Lead)",
+        status: "completed",
+        responsibility:
+          "Coordinate the Phase 5 review and refinement process, compare actual outputs with the stage goals, identify gaps, guide rerun validation, and update the project webpage with cautious and accurate wording.",
+        workDone:
+          "Reviewed the submitted outputs, identified the main consistency and OCR-evaluation gaps, coordinated the final validation workflow, and prepared the webpage wording to present Phase 5 as an evidence-quality refinement stage. The review process verified full-video consistency, EasyOCR installation and comparison, formula OCR testing, enhanced visual mapping, formula propagation into fine/coarse evidence, and final completion status.",
+        output:
+          "Produced completion review summaries, validation notes, final status wording, and updated Phase 5 webpage content.",
+        blockers:
+          "The main communication risk is overstatement. The current result should be presented as a structured evidence prototype ready for Phase 3 interface and prototype retrieval testing, not as a fully production-ready or exhaustively benchmarked system.",
+        nextStep:
+          "Keep the webpage aligned with the submitted artifacts, preserve limitations clearly, and support the next stage with the refined structured evidence outputs.",
+      },
+    },
+    outputs: {
+      transcript: {
+        status: "reused input",
+        kind: "ASR transcript",
+        content:
+          "The existing ASR transcript contains 228 timestamped segments and was reused as the speech input for the final evidence refinement workflow. It is structurally ready for downstream evidence rebuilding, and additional ASR reproducibility materials can be added later if needed.",
+      },
+      ocr: {
+        status: "refined output",
+        kind: "structured visual evidence",
+        content:
+          "The visual pipeline produced 46 keyframes, 46 slide intervals, and full-duration Tesseract OCR mapping for the selected lecture video. Enhanced visual outputs preserve raw OCR, cleaned OCR, general text, EasyOCR comparison fields, formula OCR fields, OCR confidence, model names, preprocessing information, and slide identifiers.",
+      },
+      keyframe: {
+        status: "representative validation",
+        kind: "OCR and formula OCR comparison",
+        content:
+          "EasyOCR was successfully tested on 8 representative same-video frames, producing 8/8 successful comparisons with Tesseract. Formula OCR was tested with pix2tex on 8 manually selected formula / complex-text crops; 6 outputs were reviewer-readable and propagated downstream, while 2 low-quality outputs were preserved only as raw traceability.",
+      },
+      evidenceUnit: {
+        status: "completed prototype output",
+        kind: "structured evidence representation",
+        content:
+          "The final evidence output contains 228 fine-grained evidence units and 47 coarse-grained evidence blocks. All units have slide identifiers, OCR evidence, and keyframe references, with 0 ASR-only units. Formula OCR is preserved in 53 units and 12 blocks, and parent-child validation passes with 0 issues.",
+      },
+    },
+    notes: [
+      "Phase 5 is completed and focuses on evidence-quality refinement rather than retrieval or embedding implementation.",
+      "The minimum technical flow is substantially complete at prototype level: full-duration visual outputs, representative EasyOCR comparison, representative formula OCR testing, enhanced visual mapping, fine/coarse evidence hierarchy, and quality reporting.",
+      "The result should be described as a structured evidence prototype for Phase 3 interface and prototype retrieval testing, not as a fully production-ready or exhaustive benchmark system.",
+    ],
+    nextStep:
+      "Use the enhanced structured evidence outputs as Phase 3 loader / indexing / prototype retrieval inputs, while documenting remaining limitations: optional ASR reproducibility materials, representative-only EasyOCR testing, manual formula crops, adjacent-slide boundary references, and quality-report integration cleanup.",
   },
 
   phase6: {
@@ -1084,8 +1178,8 @@ export default function CapstoneProjectWebpage() {
     phase1: false,
     phase2: false,
     phase3: false,
-    phase4: true,
-    phase5: false,
+    phase4: false,
+    phase5: true,
     phase6: false,
     phase7: false,
   });
@@ -1135,9 +1229,9 @@ export default function CapstoneProjectWebpage() {
                     Current emphasis
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <Pill tone="blue">Agent Orchestration</Pill>
-                    <Pill tone="blue">Evidence Aggregation</Pill>
-                    <Pill tone="blue">Verification</Pill>
+                    <Pill tone="blue">Evidence Refinement</Pill>
+                    <Pill tone="blue">OCR Comparison</Pill>
+                    <Pill tone="blue">Formula Evidence</Pill>
                   </div>
                 </div>
 
@@ -1156,19 +1250,19 @@ export default function CapstoneProjectWebpage() {
           </section>
 
           <SectionShell
-            title="Latest Update: Phase 4 Multi-Agent Orchestration Prototype"
-            subtitle="This section makes the webpage read as an ongoing project progress page rather than a static report."
-            right={<Pill tone="blue">Current update</Pill>}
+            title="Latest Update: Phase 5 Evidence Refinement Completed"
+            subtitle="This section summarizes the completed evidence-quality refinement work, OCR comparison, formula OCR testing, and final structured evidence validation."
+            right={<Pill tone="emerald">Completed update</Pill>}
           >
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-              <InfoCard title="What changed since Phase 3">
+              <InfoCard title="What changed in Phase 5">
                 <p>
-                  Phase 3 built evidence indexing, retrieval, and an initial grounded QA workflow. Phase 4 now organizes these capabilities into a coordinator-based orchestration prototype with EvidenceStore, RetrievalAgent, QueryRouter, EvidenceAggregator, AnswerGroundingAgent, VerificationAgent, FinalOutput, and agent logs.
+                  Phase 5 completed the evidence-quality refinement work for the selected lecture video. The main update is a full-video consistency validation, representative EasyOCR comparison, pix2tex formula OCR testing, enhanced visual mapping, formula propagation into fine-grained and coarse-grained evidence, and final quality review.
                 </p>
               </InfoCard>
               <InfoCard title="Current verified status">
                 <p>
-                  The Phase 4 structure is implemented at prototype level. Member 3 unit tests pass and the CLI can run with explicit evidence JSONL, while full Chroma-backed end-to-end reproducibility still requires path, dependency, and runbook cleanup.
+                  The refined outputs now form a completed structured evidence prototype: 228 fine-grained evidence units, 47 coarse-grained evidence blocks, 0 ASR-only units, 53 units with formula text, 12 blocks with combined formula text, and valid parent-child hierarchy. The result is suitable for Phase 3 interface and prototype retrieval testing, while full-video formula coverage and boundary alignment remain documented limitations.
                 </p>
               </InfoCard>
             </div>
