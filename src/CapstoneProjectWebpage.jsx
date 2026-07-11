@@ -6,14 +6,14 @@ const projectMeta = {
   subtitle:
     "A modular prototype for evidence-grounded question answering over lecture-style educational videos.",
   tagline:
-    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, Phase 3 built retrieval and initial grounded QA, Phase 4 organized these capabilities into a coordinator-based orchestration prototype, and Phase 5 completed evidence-quality refinement through full-video consistency validation, OCR comparison, formula OCR testing, and structured evidence validation.",
+    "This webpage tracks our ongoing project progress. Phase 2 converted lecture videos into timestamped evidence units, Phase 3 built retrieval and initial grounded QA, Phase 4 organized these capabilities into a coordinator-based orchestration prototype, Phase 5 refined evidence quality, and Phase 6 reintegrated and audited the final prototype path.",
   badges: [
     "Multimodal Agent",
     "Evidence Grounding",
     "Lecture Video QA",
     "Temporal Retrieval",
   ],
-  currentStage: "Phase 5 – Evidence Refinement Completed",
+  currentStage: "Phase 6 — Reintegration Audited",
   status: "Ongoing Project Webpage",
 };
 
@@ -95,7 +95,7 @@ const datasetCards = [
     label: "Current prototype dataset",
     value: "1 fully processed lecture-style video",
     detail:
-      "The current end-to-end prototype has been validated on one selected English lecture-style educational video about linear algebra.",
+      "The current integrated data and live retrieval path have been validated on one selected English lecture-style educational video about orthogonal vectors; the complete demo remains limited by documented media and integration issues.",
   },
   {
     label: "Approximate duration",
@@ -203,10 +203,10 @@ const phaseTimeline = [
   {
     id: "phase6",
     title: "Phase 6: Final System Completion and Webpage Consolidation",
-    status: "upcoming",
+    status: "current",
     period: "17 Jun 2026 – 13 Jul 2026",
     summary:
-      "Finalize the prototype, consolidate the webpage, and prepare demo materials.",
+      "Reintegrated the final data and live retrieval path, then audited what is validated, partially validated, or currently unusable.",
   },
   {
     id: "phase7",
@@ -414,7 +414,7 @@ const phaseDetails = {
     },
     notes: [
       "Phase 2 emphasis: multimedia parsing and timestamped evidence construction.",
-      "The current prototype uses one selected linear algebra lecture video as the end-to-end validation case.",
+      "This Phase 2 record used one selected linear algebra lecture video as its validation case; Phase 6 later consolidated and verified the Orthogonal Vectors final dataset and retrieval configuration.",
       "The Phase 2 result is not just a set of files; it is a reusable evidence representation for Phase 3 retrieval.",
     ],
     nextStep:
@@ -750,15 +750,67 @@ const phaseDetails = {
 
   phase6: {
     summary:
-      "This phase will finalize the prototype and consolidate the project webpage and demo materials.",
+      "Phase 6 reintegrated the declared final evidence data with the current Yu runtime and audited the resulting data, retrieval, query, answer, verification, and media paths. The free-text retrieval path is runnable and validated, but the package is not fully integrated or demo-ready as submitted.",
     tasks: [
-      "Finalize the main system functions and interaction flow.",
-      "Complete the prototype for final demonstration.",
-      "Update and consolidate the project webpage.",
-      "Prepare screenshots, architecture illustrations, and demo materials.",
-      "Complete the work required for Project Progress Update 4.",
+      "Use final_data_formula_experiment_paddleocr as the declared final runtime source and validate its evidence hierarchy.",
+      "Connect Yu's orchestration path to Liu's retrieval implementation and the final Chroma collections.",
+      "Validate saved-dropdown and live free-text query behavior, current logs, evidence IDs, and fallback behavior.",
+      "Audit template answer generation, optional LLM interfaces, structural verification, UI media serving, and reproducibility limits.",
+      "Consolidate the webpage with evidence-backed current and final status wording.",
     ],
-    notStarted: true,
+    memberDetails: {
+      han: {
+        label: "Han Jiapeng — Evidence Store / Manifest",
+        status: "pending integration",
+        responsibility: "Provide canonical evidence lookup, path resolution, and display-ready metadata.",
+        workDone: "EvidenceStore APIs are present, but the submitted Han data remains at 228 units / 40 blocks and its manifest paths fail from the project root.",
+        output: "Evidence lookup and DisplayBundle-oriented code artifacts.",
+        blockers: "Present but unusable in the final integrated workflow; Yu currently bypasses Han with its own display store.",
+        nextStep: "Point the manifest to portable final assets and integrate the canonical store into Yu's path.",
+      },
+      liu: {
+        label: "Liu Mingxuan — Hierarchical Retrieval",
+        status: "partial prototype",
+        responsibility: "Provide block and unit retrieval with Chroma and a marked TF-IDF fallback.",
+        workDone: "Yu dynamically calls Liu's retrieval class with the final manifest. The active Chroma was validated at 50 blocks / 228 units and its documents match the final JSONL.",
+        output: "Live RetrievalResultV2 responses with block/unit IDs, timestamps, backend status, timing, and warnings.",
+        blockers: "Liu's packaged database remains at 40/228, and Chroma unit retrieval is globally queried before parent-block filtering rather than truly block-scoped.",
+        nextStep: "Consolidate the packaged database and constrain unit candidates to retrieved parent blocks.",
+      },
+      yu: {
+        label: "Yu Zhengting — Orchestration / UI",
+        status: "partial prototype",
+        responsibility: "Route queries, call retrieval, aggregate evidence, generate and verify answers, and expose FinalOutputV2 through CLI and UI.",
+        workDone: "The CLI and free-text HTTP path run live Chroma queries. New questions produce current logs and query-dependent evidence IDs; the dropdown loads six saved JSON outputs.",
+        output: "Hybrid UI and structured FinalOutputV2 with retrieval, evidence, answer, verification, display, and agent-log fields.",
+        blockers: "Video serving returns 404, retrieval failures may substitute saved results, answer generation defaults to templates, and verification is structural rather than semantic.",
+        nextStep: "Repair media paths, make fallback provenance explicit, improve retrieval localization and semantic refusal/verification behavior.",
+      },
+      bi: {
+        label: "Bi Yifeng — Review / Webpage Consolidation",
+        status: "in progress",
+        responsibility: "Consolidate audit-backed status, representative results, limitations, and project communication.",
+        workDone: "Reintegration evidence was reviewed and the webpage was aligned with the final audited runtime rather than planned Phase 6 claims.",
+        output: "Evidence-backed Phase 6 status and restrained final capability wording.",
+        blockers: "Direct LLM comparison is still a placeholder, and the package cannot yet support a complete demo-readiness claim.",
+        nextStep: "Update communication artifacts after the remaining integration blockers are resolved and revalidated.",
+      },
+    },
+    outputs: {
+      transcript: { status: "verified", kind: "data identity", content: "All 228 ASR text and timestamp rows exactly match the selected Orthogonal Vectors transcript; sampled keyframes also match the same video at their declared timestamps." },
+      ocr: { status: "verified", kind: "final evidence data", content: "The declared final source contains 228 units and 50 structurally valid coarse blocks. PaddleOCR formula evidence comes from selected-frame crops and propagates to 41 units / 8 blocks; it is not a full-video automatic formula pass." },
+      keyframe: { status: "partial prototype", kind: "UI media", content: "Representative keyframes are served and validated, but the video endpoint returns 404, so playback and Play Clip are present but unusable in the submitted workflow." },
+      evidenceUnit: { status: "partial prototype", kind: "live integrated result", content: "Free-text Ask calls POST /api/ask and was validated with live Chroma, new evidence IDs, and current agent logs. Answers default to conversational_template_with_evidence; local Qwen and OpenAI interfaces exist but were disabled during review." },
+    },
+    notes: [
+      "The active Yu path uses the declared final 50-block / 228-unit Chroma. Han and Liu's separately packaged legacy assets remain at 40 blocks / 228 units.",
+      "The UI is hybrid: the dropdown reads saved JSON, while free-text Ask executes the live API. Saved results may still be used after retrieval errors, so warnings and current timestamps must be checked.",
+      "Live query and Chroma execution are validated. Han/Liu/Yu are not fully reintegrated, video evidence is unusable, and overall answer quality is only partially validated.",
+      "Generation is rule/template based by default. Optional LLM interfaces are implemented but not currently enabled, and no measured direct-LLM comparison is available.",
+      "Verification checks structure and citation fields rather than semantic correctness; unsupported-query refusal and flagship Q-transpose localization currently fail acceptance checks.",
+    ],
+    nextStep:
+      "Resolve the 47-versus-50 provenance, portable manifest/video path, canonical Han integration, truly block-scoped unit retrieval, saved-fallback labeling, semantic verification/refusal, and reproducible dependency setup before claiming a complete end-to-end demo.",
   },
 
   phase7: {
@@ -798,9 +850,9 @@ const challenges = [
   "Repeated or noisy OCR across frames.",
   "Temporal alignment between ASR and OCR.",
   "Top-1 retrieval ranking is not always the most accurate even when Top-K contains relevant evidence.",
-  "Visual keyframe references are not fully surfaced in the current answer display.",
-  "Local Gradio webpage behavior can vary by Python package version; CLI validation is currently more stable.",
-  "Phase 4 path mapping and runbook cleanup are still needed for stable Chroma-backed end-to-end reproduction.",
+  "The Phase 6 UI serves keyframes, but its video endpoint returns 404, so clip playback is currently unusable.",
+  "The default answer is template based and the current verifier checks structure rather than semantic correctness.",
+  "Han's store is bypassed, legacy 40-block assets remain, and the submitted runtime still needs portable paths and dependency documentation.",
 ];
 
 const nextSteps = [
@@ -808,7 +860,7 @@ const nextSteps = [
   "Improve OCR cleaning and OCR-aware retrieval.",
   "Refine reranking and evidence aggregation for better Top-1 results.",
   "Integrate visual evidence references more clearly into the answer display.",
-  "Clean up Phase 4 path mapping, dependencies, and runbook instructions for stable end-to-end reproduction.",
+  "Resolve Phase 6 media paths, fallback provenance, block-scoped localization, semantic verification, and reproducible setup.",
   "Expand the dataset beyond the current prototype video for broader validation.",
 ];
 
@@ -1179,8 +1231,8 @@ export default function CapstoneProjectWebpage() {
     phase2: false,
     phase3: false,
     phase4: false,
-    phase5: true,
-    phase6: false,
+    phase5: false,
+    phase6: true,
     phase7: false,
   });
 
@@ -1229,9 +1281,9 @@ export default function CapstoneProjectWebpage() {
                     Current emphasis
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <Pill tone="blue">Evidence Refinement</Pill>
-                    <Pill tone="blue">OCR Comparison</Pill>
-                    <Pill tone="blue">Formula Evidence</Pill>
+                    <Pill tone="blue">Final Data Audit</Pill>
+                     <Pill tone="blue">Live Retrieval</Pill>
+                     <Pill tone="blue">Integration Limits</Pill>
                   </div>
                 </div>
 
@@ -1250,19 +1302,19 @@ export default function CapstoneProjectWebpage() {
           </section>
 
           <SectionShell
-            title="Latest Update: Phase 5 Evidence Refinement Completed"
-            subtitle="This section summarizes the completed evidence-quality refinement work, OCR comparison, formula OCR testing, and final structured evidence validation."
-            right={<Pill tone="emerald">Completed update</Pill>}
+            title="Latest Update: Phase 6 Reintegration Review"
+            subtitle="This section summarizes the audited final data, live retrieval path, current answer mode, and remaining integration limits."
+            right={<Pill tone="amber">Audited prototype</Pill>}
           >
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-              <InfoCard title="What changed in Phase 5">
+              <InfoCard title="What changed in Phase 6">
                 <p>
-                  Phase 5 completed the evidence-quality refinement work for the selected lecture video. The main update is a full-video consistency validation, representative EasyOCR comparison, pix2tex formula OCR testing, enhanced visual mapping, formula propagation into fine-grained and coarse-grained evidence, and final quality review.
+                  Phase 6 selected final_data_formula_experiment_paddleocr as the runtime source and connected Yu's orchestration path to Liu's retrieval implementation. The active Chroma contains 50 coarse blocks and 228 evidence units, with documents matching the final JSONL.
                 </p>
               </InfoCard>
               <InfoCard title="Current verified status">
                 <p>
-                  The refined outputs now form a completed structured evidence prototype: 228 fine-grained evidence units, 47 coarse-grained evidence blocks, 0 ASR-only units, 53 units with formula text, 12 blocks with combined formula text, and valid parent-child hierarchy. The result is suitable for Phase 3 interface and prototype retrieval testing, while full-video formula coverage and boundary alignment remain documented limitations.
+                  The final data has a valid 228-unit / 50-block hierarchy. Its ASR matches all 228 transcript rows exactly, and sampled keyframes strongly match the same Orthogonal Vectors video. Free-text questions run live retrieval, while dropdown examples use saved JSON. Answers remain template based by default; LLM hooks are disabled, verification is structural, and video playback is currently unusable.
                 </p>
               </InfoCard>
             </div>
